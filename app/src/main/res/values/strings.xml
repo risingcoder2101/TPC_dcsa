@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TPC Portal</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="students">Students</string>
+    <string name="companies">Companies</string>
+    <string name="placed_students">Placed Students</string>
+    <string name="offer_letters">Offer Letters</string>
+    <string name="user_management">User Management</string>
+    <string name="logout">Logout</string>
+</resources>
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Graduation Cap Icon -->
+    <group
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:translateX="10.8"
+        android:translateY="10.8">
+
+        <!-- Cap Top -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,30 L20,45 L54,60 L88,45 Z"/>
+
+        <!-- Cap Left Side -->
+        <path
+            android:fillColor="#E8EAF6"
+            android:pathData="M20,45 L20,55 L54,70 L54,60 Z"/>
+
+        <!-- Cap Right Side -->
+        <path
+            android:fillColor="#C5CAE9"
+            android:pathData="M54,60 L54,70 L88,55 L88,45 Z"/>
+
+        <!-- Tassel -->
+        <path
+            android:fillColor="#FFC107"
+            android:pathData="M88,45 L88,50 L92,54 L96,50 L96,45 Z"/>
+
+        <!-- Circle at tassel end -->
+        <path
+            android:fillColor="#FFC107"
+            android:pathData="M92,54 m-4,0 a4,4 0,1,1 8,0 a4,4 0,1,1 -8,0"/>
+
+        <!-- Book/Document -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M35,70 L35,85 L73,85 L73,70 Z"/>
+
+        <!-- Book lines -->
+        <path
+            android:fillColor="#5C6BC0"
+            android:strokeWidth="1.5"
+            android:pathData="M40,75 L68,75 M40,79 L68,79"/>
+
+    </group>
+</vector>
+
