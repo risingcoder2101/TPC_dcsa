@@ -54,7 +54,7 @@ A modern Android app for managing students, companies, and placements for the Tr
 - Material Design Components
 
 ## License
-MIT
+This project is for educational purposes only.
 
 ---
 For any issues or feature requests, please open an issue in this repository.
