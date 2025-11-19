@@ -14,13 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tpc_dcsa.model.Student;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.InputStream;
+import java.util.List;
 
 public class AddStudentActivity extends AppCompatActivity {
     private EditText etName, etRollNumber, etGender, etBatch, etEmail, etPhone, etCampus, etPercentage;
@@ -92,31 +87,15 @@ public class AddStudentActivity extends AppCompatActivity {
     }
 
     private void importStudentsFromExcelFile(Uri uri) {
-        try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Skip header
-                String name = getCellString(row, 0);
-                String rollNumber = getCellString(row, 1);
-                String gender = getCellString(row, 2);
-                String batch = getCellString(row, 3);
-                String email = getCellString(row, 4);
-                String phone = getCellString(row, 5);
-                String campus = getCellString(row, 6);
-                String percentage = getCellString(row, 7);
-                if (name.isEmpty()) continue;
-                addStudentToFirestore(name, rollNumber, gender, batch, email, phone, campus, percentage);
+        try {
+            List<Student> students = ExcelImporter.importStudentsFromUri(this, uri);
+            for (Student s : students) {
+                addStudentToFirestore(s.getName(), s.getRollNumber(), s.getGender(), s.getBatch(), s.getEmail(), s.getPhone(), s.getCampus(), s.getPercentage());
             }
             Toast.makeText(this, "Students imported successfully.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(this, "Failed to import: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-
-    private String getCellString(Row row, int col) {
-        Cell cell = row.getCell(col);
-        return cell == null ? "" : cell.toString().trim();
     }
 
     private void addStudentToFirestore(String name, String rollNumber, String gender, String batch, String email, String phone, String campus, String percentage) {

@@ -50,7 +50,7 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:elevation="4dp"
@@ -106,7 +106,9 @@
                         android:background="@drawable/edit_text_bg"
                         android:textSize="14sp"
                         android:inputType="text"
-                        android:autofillHints="username" />
+                        android:autofillHints="username"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray_text" />
 
                 </LinearLayout>
 
@@ -136,7 +138,9 @@
                         android:inputType="textPassword"
                         android:background="@drawable/edit_text_bg"
                         android:textSize="14sp"
-                        android:autofillHints="password" />
+                        android:autofillHints="password"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray_text" />
 
                 </LinearLayout>
 

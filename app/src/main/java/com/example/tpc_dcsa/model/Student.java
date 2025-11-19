@@ -9,12 +9,19 @@ public class Student {
     private String phone;
     private String campus;
     private String percentage;
+    private boolean placed;
+    private String placedCompany;
+    private long placedAtUtc;
 
     public Student() {
         // Default constructor required for Firestore
     }
 
     public Student(String name, String rollNumber, String gender, String batch, String email, String phone, String campus, String percentage) {
+        this(name, rollNumber, gender, batch, email, phone, campus, percentage, false, "", 0L);
+    }
+
+    public Student(String name, String rollNumber, String gender, String batch, String email, String phone, String campus, String percentage, boolean placed, String placedCompany, long placedAtUtc) {
         this.name = name;
         this.rollNumber = rollNumber;
         this.gender = gender;
@@ -23,6 +30,9 @@ public class Student {
         this.phone = phone;
         this.campus = campus;
         this.percentage = percentage;
+        this.placed = placed;
+        this.placedCompany = placedCompany;
+        this.placedAtUtc = placedAtUtc;
     }
 
     public String getName() { return name; }
@@ -41,5 +51,10 @@ public class Student {
     public void setCampus(String campus) { this.campus = campus; }
     public String getPercentage() { return percentage; }
     public void setPercentage(String percentage) { this.percentage = percentage; }
+    public boolean isPlaced() { return placed; }
+    public void setPlaced(boolean placed) { this.placed = placed; }
+    public String getPlacedCompany() { return placedCompany; }
+    public void setPlacedCompany(String placedCompany) { this.placedCompany = placedCompany; }
+    public long getPlacedAtUtc() { return placedAtUtc; }
+    public void setPlacedAtUtc(long placedAtUtc) { this.placedAtUtc = placedAtUtc; }
 }
-

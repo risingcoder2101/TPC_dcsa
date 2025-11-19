@@ -113,7 +113,9 @@
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:autofillHints="name"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_text" />
 
         </LinearLayout>
 
