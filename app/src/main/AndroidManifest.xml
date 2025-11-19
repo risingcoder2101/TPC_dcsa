@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Required for Firebase and network operations -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TPC_dcsa">
 
+        <!-- Start at LoginActivity -->
         <activity
-            android:name=".DashboardActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +24,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".StudentsActivity" />
-        <activity android:name=".AddStudentActivity" />
-        <activity android:name=".CompaniesActivity" />
-        <activity android:name=".PlacedStudentsActivity" />
-        <activity android:name=".OfferLettersActivity" />
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".StudentsActivity" android:exported="false" />
+        <activity android:name=".AddStudentActivity" android:exported="false" />
+        <activity android:name=".CompaniesActivity" android:exported="false" />
+        <activity android:name=".AddCompanyActivity" android:exported="false" />
+        <activity android:name=".PlacedStudentsActivity" android:exported="false" />
+        <activity android:name=".OfferLettersActivity" android:exported="false" />
+        <activity android:name=".UserManagementActivity" android:exported="false" />
 
     </application>
 

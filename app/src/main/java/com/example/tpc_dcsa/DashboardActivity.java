@@ -1,8 +1,6 @@
 package com.example.tpc_dcsa;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tpc_dcsa.database.DatabaseHelper;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Locale;
 
@@ -28,9 +29,14 @@ public class DashboardActivity extends AppCompatActivity {
     private View overlay;
     private ImageView btnMenu;
 
-    // Database helper for accessing SQLite database
-    private DatabaseHelper dbHelper;
+    // Statistic TextViews
+    private TextView tvTotalStudents, tvPlacedStudents, tvTotalCompanies, tvPlacementRate;
 
+    // Firebase Firestore database instance
+    private FirebaseFirestore db;
+
+    private ListenerRegistration studentsListener;
+    private ListenerRegistration companiesListener;
 
     // Sidebar state - tracks if sidebar is currently visible
     private boolean isSidebarOpen = false;
@@ -41,18 +47,17 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Initialize database helper
-        dbHelper = new DatabaseHelper(this);
-
+        // Initialize Firestore database
+        db = FirebaseFirestore.getInstance();
 
         // Setup all UI components and their click listeners
         initViews();
 
-        // Load and display statistics from database
-        updateDashboardStats();
-
-        // Setup sidebar menu functionality
+        // Setup hamburger menu and sidebar functionality
         setupSidebarToggle();
+
+        // Load dashboard data from Firestore and update UI
+        updateDashboardStats();
     }
 
     /**
@@ -64,12 +69,17 @@ public class DashboardActivity extends AppCompatActivity {
         sidebar = findViewById(R.id.sidebar);
         overlay = findViewById(R.id.overlay);
 
+        // Statistic text views
+        tvTotalStudents = findViewById(R.id.tv_total_students);
+        tvPlacedStudents = findViewById(R.id.tv_placed_students);
+        tvTotalCompanies = findViewById(R.id.tv_total_companies);
+        tvPlacementRate = findViewById(R.id.tv_placement_rate);
+
         // Navigation menu items
         LinearLayout llDashboard = findViewById(R.id.ll_dashboard);
         LinearLayout llNavStudents = findViewById(R.id.ll_nav_students);
         LinearLayout llNavCompanies = findViewById(R.id.ll_nav_companies);
         LinearLayout llNavPlaced = findViewById(R.id.ll_nav_placed);
-        LinearLayout llNavOffers = findViewById(R.id.ll_nav_offers);
 
         // Dashboard menu item - just closes sidebar
         llDashboard.setOnClickListener(v -> {
@@ -96,29 +106,24 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         // Offer letters menu - opens offer letters screen
-        llNavOffers.setOnClickListener(v -> {
-            closeSidebar();
-            startActivity(new Intent(DashboardActivity.this, OfferLettersActivity.class));
-        });
-
+        // llNavOffers.setOnClickListener(v -> {
+        //     closeSidebar();
+        //     startActivity(new Intent(DashboardActivity.this, OfferLettersActivity.class));
+        // });
 
 
         // Quick Action Buttons
         Button btnAddStudent = findViewById(R.id.btn_add_student);
         Button btnAddCompany = findViewById(R.id.btn_add_company);
-        Button btnUpcomingDrives = findViewById(R.id.btn_upcoming_drives);
 
         btnAddStudent.setOnClickListener(v -> {
             startActivity(new Intent(DashboardActivity.this, AddStudentActivity.class));
         });
 
         btnAddCompany.setOnClickListener(v -> {
-            startActivity(new Intent(DashboardActivity.this, CompaniesActivity.class));
+            startActivity(new Intent(DashboardActivity.this, AddCompanyActivity.class));
         });
 
-        btnUpcomingDrives.setOnClickListener(v -> {
-            Toast.makeText(this, "Upcoming Drives", Toast.LENGTH_SHORT).show();
-        });
     }
 
     /**
@@ -172,40 +177,56 @@ public class DashboardActivity extends AppCompatActivity {
      * Load statistics from database and update dashboard cards
      */
     private void updateDashboardStats() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // Real-time listener for students
+        if (studentsListener != null) studentsListener.remove();
+        studentsListener = db.collection("students").addSnapshotListener((studentsSnap, e) -> {
+            if (e != null) {
+                Toast.makeText(this, "Failed to load student stats: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+            int totalStudents = studentsSnap != null ? studentsSnap.size() : 0;
+            int placedCount = 0;
+            if (studentsSnap != null) {
+                for (DocumentSnapshot doc : studentsSnap.getDocuments()) {
+                    // Check common fields that indicate placement
+                    Object placedObj = doc.get("placed");
+                    if (placedObj instanceof Boolean) {
+                        if ((Boolean) placedObj) placedCount++;
+                        continue;
+                    }
+                    Object companyObj = doc.get("company");
+                    if (companyObj != null && !companyObj.toString().trim().isEmpty()) {
+                        placedCount++;
+                        continue;
+                    }
+                    Object statusObj = doc.get("status");
+                    if (statusObj != null && statusObj.toString().equalsIgnoreCase("placed")) {
+                        placedCount++;
+                    }
+                }
+            }
+            tvTotalStudents.setText(String.valueOf(totalStudents));
+            tvPlacedStudents.setText(String.valueOf(placedCount));
+            double rate = totalStudents > 0 ? (placedCount * 100.0 / totalStudents) : 0.0;
+            tvPlacementRate.setText(String.format(Locale.getDefault(), "%.0f%%", rate));
+        });
 
-        // Count total students in database
-        Cursor studentCursor = db.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_STUDENTS, null);
-        studentCursor.moveToFirst();
-        int totalStudents = studentCursor.getInt(0);
-        studentCursor.close();
+        // Real-time listener for companies
+        if (companiesListener != null) companiesListener.remove();
+        companiesListener = db.collection("companies").addSnapshotListener((companiesSnap, e) -> {
+            if (e != null) {
+                Toast.makeText(this, "Failed to load companies: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                return;
+            }
+            int totalCompanies = companiesSnap != null ? companiesSnap.size() : 0;
+            tvTotalCompanies.setText(String.valueOf(totalCompanies));
+        });
+    }
 
-        // Count placed students
-        Cursor placedCursor = db.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_PLACEMENTS, null);
-        placedCursor.moveToFirst();
-        int placedStudents = placedCursor.getInt(0);
-        placedCursor.close();
-
-        // Count total companies
-        Cursor companyCursor = db.rawQuery("SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_COMPANIES, null);
-        companyCursor.moveToFirst();
-        int totalCompanies = companyCursor.getInt(0);
-        companyCursor.close();
-
-        // Calculate placement rate percentage
-        float placementRate = (totalStudents > 0) ? (float) placedStudents / totalStudents * 100 : 0;
-
-        // Update dashboard stat cards with data
-        TextView tvTotalStudents = findViewById(R.id.tv_total_students);
-        TextView tvPlacedStudents = findViewById(R.id.tv_placed_students);
-        TextView tvTotalCompanies = findViewById(R.id.tv_total_companies);
-        TextView tvPlacementRate = findViewById(R.id.tv_placement_rate);
-
-        tvTotalStudents.setText(String.valueOf(totalStudents));
-        tvPlacedStudents.setText(String.valueOf(placedStudents));
-        tvTotalCompanies.setText(String.valueOf(totalCompanies));
-        tvPlacementRate.setText(String.format(Locale.getDefault(), "%.2f%%", placementRate));
-
-        db.close();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (studentsListener != null) studentsListener.remove();
+        if (companiesListener != null) companiesListener.remove();
     }
 }

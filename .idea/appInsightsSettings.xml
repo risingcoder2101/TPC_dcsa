@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.tpc_dcsa" />
+                  <option name="mobileSdkAppId" value="1:343004566268:android:8a8337819141ae7dcc7d79" />
+                  <option name="projectId" value="tpcportaldcsa" />
+                  <option name="projectNumber" value="343004566268" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

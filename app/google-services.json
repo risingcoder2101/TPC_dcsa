@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "343004566268",
+    "firebase_url": "https://tpcportaldcsa-default-rtdb.firebaseio.com",
+    "project_id": "tpcportaldcsa",
+    "storage_bucket": "tpcportaldcsa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343004566268:android:8a8337819141ae7dcc7d79",
+        "android_client_info": {
+          "package_name": "com.example.tpc_dcsa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3wkvx79e_r-xh3VxDZcBwlPxeKeixnzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -162,14 +162,6 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Default Credentials Info -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Default credentials: admin/admin123 or member/member123"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray_text"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

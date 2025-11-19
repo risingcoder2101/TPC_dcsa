@@ -20,5 +20,5 @@ public class UserManagementActivity extends AppCompatActivity {
             Toast.makeText(this, "Add User functionality coming soon!", Toast.LENGTH_SHORT).show();
         });
     }
-}
 
+}

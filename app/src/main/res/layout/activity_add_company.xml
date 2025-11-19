@@ -6,11 +6,10 @@
     android:background="@color/white">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Add Student"
+        app:title="Add Company"
         app:navigationIcon="@drawable/ic_back"
         android:background="@color/black"
         app:titleTextColor="@color/white" />
@@ -41,7 +40,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Student Name"
+                        android:hint="Company Name"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="12dp">
 
@@ -49,19 +48,19 @@
                             android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName" />
+                            android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Roll Number"
+                        android:hint="Location"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_roll_number"
+                            android:id="@+id/et_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text" />
@@ -71,12 +70,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Gender"
+                        android:hint="Role(s)"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_gender"
+                            android:id="@+id/et_roles"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text" />
@@ -86,12 +85,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Batch (MCA Morning/Evening, MSC)"
+                        android:hint="Package"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_batch"
+                            android:id="@+id/et_package"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text" />
@@ -101,42 +100,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email"
+                        android:hint="Drive Date"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Phone Number"
-                        app:boxBackgroundMode="outline"
-                        android:layout_marginBottom="12dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Campus (Chandigarh/Muktsar/Hoshiarpur)"
-                        app:boxBackgroundMode="outline"
-                        android:layout_marginBottom="12dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_campus"
+                            android:id="@+id/et_drive_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text" />
@@ -146,15 +115,15 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Current Percentage"
+                        android:hint="Status (Completed/Upcoming)"
                         app:boxBackgroundMode="outline"
                         android:layout_marginBottom="16dp">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_percentage"
+                            android:id="@+id/et_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
+                            android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,16 +131,7 @@
                         android:id="@+id/btn_submit"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="Add Student"
-                        android:textAllCaps="false"
-                        app:cornerRadius="12dp"
-                        android:layout_marginBottom="12dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_import_excel"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Import from Excel"
+                        android:text="Add Company"
                         android:textAllCaps="false"
                         app:cornerRadius="12dp" />
 

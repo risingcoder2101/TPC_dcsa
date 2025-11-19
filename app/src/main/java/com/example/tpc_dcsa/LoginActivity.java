@@ -1,8 +1,6 @@
 package com.example.tpc_dcsa;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,7 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tpc_dcsa.database.DatabaseHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Login Activity - First screen of the app
@@ -25,16 +24,16 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox cbRememberMe;
     private Button btnLogin;
 
-    // Database helper for user authentication
-    private DatabaseHelper dbHelper;
+    // Firebase Authentication instance
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize database helper
-        dbHelper = new DatabaseHelper(this);
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Find UI components from layout
         etUsername = findViewById(R.id.et_username);
@@ -47,69 +46,38 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Perform login authentication
-     * 1. Get username and password from input fields
+     * Perform login authentication with Firebase
+     * 1. Get email and password from input fields
      * 2. Check if both fields are filled
-     * 3. Query database for matching username
-     * 4. Verify password matches
-     * 5. Navigate to dashboard if successful
+     * 3. Use FirebaseAuth to sign in with email and password
+     * 4. Navigate to dashboard if successful
      */
     private void performLogin() {
         // Get input values and remove leading/trailing spaces
-        String username = etUsername.getText().toString().trim();
+        String email = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
         // Validate that both fields are filled
-        if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Open database for reading
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // Authenticate with Firebase
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Login successful - navigate to dashboard
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        startActivity(intent);
 
-        // Query users table for matching username
-        Cursor cursor = db.query(
-                DatabaseHelper.TABLE_USERS,           // Table name
-                null,                                 // All columns
-                DatabaseHelper.COL_USER_USERNAME + "=?",  // WHERE clause
-                new String[]{username},               // WHERE arguments
-                null,                                 // GROUP BY
-                null,                                 // HAVING
-                null                                  // ORDER BY
-        );
-
-        // Check if user exists
-        if (cursor.moveToFirst()) {
-            // Get stored password and role from database
-            String storedPassword = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_PASSWORD));
-            String role = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ROLE));
-
-            // Verify password matches
-            if (storedPassword.equals(password)) {
-                // Login successful - show message
-                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                // Navigate to dashboard with user information
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("role", role);
-                startActivity(intent);
-
-                // Close login screen so user can't go back
-                finish();
-            } else {
-                // Password doesn't match
-                Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // Username not found in database
-            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
-        }
-
-        // Clean up - close cursor and database
-        cursor.close();
-        db.close();
+                        // Close login screen so user can't go back
+                        finish();
+                    } else {
+                        // Authentication failed - show error message
+                        Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
-

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/company_icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/stat_card_blue"
+            android:gravity="center"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/tv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏢"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Company Name"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/tv_company_sector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sector"
+                android:textSize="14sp"
+                android:textColor="#616161"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="sans-serif" />
+
+            <TextView
+                android:id="@+id/tv_company_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textSize="14sp"
+                android:textColor="#9E9E9E"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_delete_company"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Delete"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
